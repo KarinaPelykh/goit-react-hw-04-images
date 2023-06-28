@@ -31,8 +31,8 @@ state = {
      console.log(data.hits);
      this.setState(prevState => ({
        images: [...prevState.images, ...data.hits],
-       showButton: page < Math.ceil(data.totalHits / 12)
-       
+       showButton: page < Math.ceil(data.totalHits / 12),
+           loading: false
      }))
      } catch (error) {
        console.log(error)
@@ -64,8 +64,9 @@ toggleModal = () => {
       <>
         <Searchbar onSubmit={this.handleSubmitForm} />
         <ImageGallery onClick={this.toggleModal} images={images} />
+        {loading && (<Loader />)}
         {showButton && (<Button onClick={this.onClickButton} />)}
-        {loading && (<Loader  />)}
+      
        
       </>
     );
