@@ -1,28 +1,21 @@
-import axios from 'axios'
-const KEY_IMAGES = '37046560-081d25d951e10cecd03c40d51'
-const instance = axios.create({
-  baseURL: `https://pixabay.com/api/?q=cat&page=1&key=${KEY_IMAGES}&image_type=photo&orientation=horizontal&per_page=12`,
-    headers: { 'Authorization': KEY_IMAGES },
-    params: {
-        orientation: 'horizontal',
-         per_page:12,
-   }
+
+import axios from 'axios';
+
+const API_KEY = '37076691-e6e6e52c23a6009a52c216588';
+
+const pixabayAPI = axios.create({
+  baseURL: 'https://pixabay.com',
 });
-export const getImages = async (query, page) => {
-  const { data } = await instance.get(`search?query=${query}&page=${page}`);
 
-  return data;
-}
-
-// import axios from 'axios';
-
-// const KEY_IMAGES = '37046560-081d25d951e10cecd03c40d51';
-
-// const instance = axios.create({
-//   baseURL: `https://pixabay.com/api/?q=cat&page=1&key=${KEY_IMAGES}&image_type=photo&orientation=horizontal&per_page=12`
-// });
-
-// export const getImages = async (query, page) => {
-//   const { data } = await instance.get(`search?query=${query}&page=${page}`);
-//   return data;
-// };
+export const getImages = async ({ query, page, perPage }) => {
+  return pixabayAPI.get('/api/', {
+    params: {
+      key: API_KEY,
+      q: query,
+      page,
+      image_type: 'photo',
+      orientation: 'horizontal',
+      per_page: perPage,
+    },
+  });
+};

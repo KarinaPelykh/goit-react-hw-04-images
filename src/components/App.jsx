@@ -1,40 +1,74 @@
-import { Component } from "react";
+
+import React, { Component } from "react";
 import { Searchbar } from "./Searchbar/Searchbar";
 import { ImageGallery } from "./ImageGallery/ImageGallery";
-
-
 import { getImages } from "service/image.Api";
-export class App extends Component{
-  state = {
-     page: 1,
-    query: "",
-    images: [] 
+import { Button } from "./Button/Button";
+import { Loader } from "./Loader/Loader";
+// import { Modal } from "./Modal/Modal";
+// import s from './Searchbar/Searchbar.module.css'
+
+export class App extends Component {
+ 
+state = {
+  page: 1,
+  query: '',
+  images: [],
+  perPage: 12,
+  loading: false,
+  showButton: false,
+ isOpenModal: false,
   }
 
 
-    componentDidUpdate(prevProps, prevState) {
-    const { page, query } = this.state;
-    if (prevState.page !== page || prevState.query !== query) {
-      getImages(page, query).then(({ hits, totalHits }) => {
-        this.setState(prevState => ({
-          images: [...prevState.images, ...hits]
-        }));
-      });
+ async componentDidUpdate(prevProps,prevState) {
+   const { page, query, perPage } = this.state;
+   
+   if (prevState.query !== query || prevState.page !== page) {
+     this.setState({loading:true})
+     try {
+     const { data } = await getImages({ page, query, perPage })
+     console.log(data.hits);
+     this.setState(prevState => ({
+       images: [...prevState.images, ...data.hits],
+       showButton: page < Math.ceil(data.totalHits / 12)
+       
+     }))
+     } catch (error) {
+       console.log(error)
+     }finally{
+          this.setState({loading:false})
     }
+   }
   }
+  
+ handleSubmitForm = query => {
+    this.setState({images:[],page:1,query});
+  };
 
-  handleSubmitForm = (query) => {
-   this.setState({query})
+  onClickButton = () => {
+    this.setState(prevState =>( {
+  page:prevState.page + 1
+} ))
   }
+  
+toggleModal = () => {
+		this.setState(prevState => ({ isOpenModal: !prevState.isOpenModal }))
+
+	}
 
   render() {
-    const {images}=this.state
+    
+    const { images,showButton,loading } = this.state;
     return (
       <>
         <Searchbar onSubmit={this.handleSubmitForm} />
-        <ImageGallery images={images } />
-      
+        <ImageGallery onClick={this.toggleModal} images={images} />
+        {showButton && (<Button onClick={this.onClickButton} />)}
+        {loading && (<Loader  />)}
+       
       </>
-  );
+    );
   }
-};
+}
+

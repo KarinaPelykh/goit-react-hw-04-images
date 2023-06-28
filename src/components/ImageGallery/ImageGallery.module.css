@@ -1,0 +1,16 @@
+.list{
+ 
+            flex-wrap: wrap;
+           
+                gap: 15px;
+                margin-top: 80px;
+                padding: 20px;
+                display: flex;
+                list-style: none;
+}
+img {
+    
+    width: 350px;
+    height: 250px;
+    object-fit: cover;
+}

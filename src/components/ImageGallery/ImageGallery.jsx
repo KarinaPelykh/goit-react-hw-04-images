@@ -1,21 +1,13 @@
 import { ImageGalleryItem } from "components/ImageGalleryItem/ImageGalleryItem"
-export const ImageGallery = ({images}) => {
+import s from './ImageGallery.module.css'
+
+export const ImageGallery = ({ images, }) => {
+    console.log();
     return <>
-        <ul style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: '15px',
-            listStyle: "none"
-        }}
-            className="gallery">
+        <ul className={s.list}>
             {
-                images.map(({id,webformatURL,tags})=> 
-                (<ImageGalleryItem key={id}
-            webformatURL={webformatURL}
-            tags={tags}
-            />)
-                )          
-}
+                images.map(image=> (<ImageGalleryItem  key={image.id} image={image} />))          
+            }
 </ul>
     </>
 }

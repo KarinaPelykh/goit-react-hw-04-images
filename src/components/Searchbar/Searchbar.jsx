@@ -1,98 +1,51 @@
-// import { Component } from "react"
-// import { getImages } from "service/image.Api";
-
-
-// export class Searchbar extends Component {
-// state = {
-//   page: 1,
-//   query: '',
-//   images:[]
-//   }
-
-//   componentDidUpdate(prevProps,prevState) {
-//     const { page, query } = this.state;
-//     if (prevState.page !== page && prevState.query !== query) {
-//       getImages(page, query).then(({photos , total_results}) => {
-//         console.log(photos);
-//         this.setState(prevState => ({
-//           images: [...prevState.images, ...photos ]
-//         }))
-//       })
-//     }
-// }
-
-//   handelSubmit = (e) => {
-//     e.preventDefault()
-//     this.props.onSubmit(this.state.query);
-//     this.setState({query:""})
-//   }
-
-//   handelChangeInput = (e) => {
-//     this.setState({query:e.target.value.toLowerCase()})
-//   }
-//     render() {
-//         return <>
-//    <header >
-//   <form  onSubmit={this.handelSubmit} >
-//     <button type="submit" class="button">
-//       <span class="button-label">Search</span>
-//     </button>
-
-//     <input
-//       class="input"
-//       type="text"
-//       autocomplete="off"
-//       autofocus
-//       placeholder="Search images and photos"
-//       onChange={this.handelChangeInput}
-//       value={this.state.query}
-//     />
-//   </form>
-// </header>
-//     </>
-//    }
-// }
-
-import React, { Component } from "react";
-
-
+import { Component } from "react";
+import s from './Searchbar.module.css'
 export class Searchbar extends Component {
-  state = {
-   
-    query: "",
-    images: []
-  };
+state = {
+  query: '',
+  images:[]
+  }
 
 
-  handleSubmit = e => {
-    e.preventDefault();
+  handelSubmit = (e) => {
+    e.preventDefault()
+
     this.props.onSubmit(this.state.query);
-    this.setState({ query: "" });
-  };
+     
+    this.setState({query: ''})
+  }
 
-  handleChangeInput = e => {
-    this.setState({ query: e.target.value.toLowerCase() });
-  };
+  handelChangeInput = (e) => {
+    this.setState({query:e.target.value.toLowerCase()})
+  }
+  handeldizaibel = () => {
+    const {query}= this.state
+    if (query === '') {
+      
+    }
+}
 
   render() {
-    return (
-      <header>
-        <form onSubmit={this.handleSubmit}>
-          <button type="submit" className="button">
-            <span className="button-label">Search</span>
-          </button>
+    const { query } = this.state;
+     const isQueryEmpty = query.trim() === '';
+        return <>
+   <header >
+  <form className={s.SearchForm}  onSubmit={this.handelSubmit} >
+              <button className={s.SearchFormButton} type="submit" style={{ visibility: isQueryEmpty ? 'hidden' : 'visible' }}>
+      <span >Search</span>
+    </button>
 
-          <input
-            className="input"
-            type="text"
-            autoComplete="off"
-            autoFocus
-            placeholder="Search images and photos"
-            onChange={this.handleChangeInput}
-            value={this.state.query}
-          />
-        </form>
-      </header>
-    );
-  }
+    <input
+      className={s.SearchFormInput}
+      type="text"
+      autocomplete="off"
+      autofocus
+      placeholder="Search images and photos"
+      onChange={this.handelChangeInput}
+      value={query}
+    />
+  </form>
+</header>
+    </>
+   }
 }
