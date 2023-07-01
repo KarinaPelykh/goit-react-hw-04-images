@@ -16,34 +16,35 @@ export const App = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   
   useEffect(() => {
-    if (!query) return;
-    setLoading(true)
-    try{
-      getImages({ page, query }).then(response => {
-        console.log(response);
-        const { hits, totalHits } = response.data;
-        setImages(prevImages => [...prevImages, ...hits]);
-    setShowButton(page < Math.ceil(totalHits / 12));
-      })
+  if (!query) return;
+
+  const fetchData = async () => {
+    setLoading(true);
+
+    try {
+      const response = await getImages({ page, query });
+      const { hits, totalHits } = response.data;
+      setImages(prevImages => [...prevImages, ...hits]);
+      setShowButton(page < Math.ceil(totalHits / 12));
     } catch (error) {
       console.log(error);
-      
-    } finally{
-        setLoading(false)
+    } finally {
+      setLoading(false);
     }
-    
-},[page, query])
-  
-  
+  };
+
+  fetchData();
+}, [page, query]);
+
   const handleSubmitForm = query => {
     setImages([]);
     setPage(1);
     setQuery(query);
-setIsOpenModal(false)
+
   };
 
  const  onClickButton = () => {
-    setPage(prevState =>( prevState.page + 1))
+    setPage(prevPage =>( prevPage + 1))
   }
   
 const toggleModal = () => {
@@ -60,3 +61,7 @@ const toggleModal = () => {
       </>
     );
   }
+
+
+
+

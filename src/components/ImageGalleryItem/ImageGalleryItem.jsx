@@ -22,4 +22,10 @@ return <>
        {isOpenModal && (<Modal image={{largeImageURL}} onClose={toggleModal} />)} 
        
       </>
-  }
+}
+  
+
+
+
+
+
