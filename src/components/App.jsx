@@ -1,75 +1,67 @@
 
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import { Searchbar } from "./Searchbar/Searchbar";
 import { ImageGallery } from "./ImageGallery/ImageGallery";
 import { getImages } from "service/image.Api";
 import { Button } from "./Button/Button";
 import { Loader } from "./Loader/Loader";
-// import { Modal } from "./Modal/Modal";
-// import s from './Searchbar/Searchbar.module.css'
-
-export class App extends Component {
- 
-state = {
-  page: 1,
-  query: '',
-  images: [],
-  perPage: 12,
-  loading: false,
-  showButton: false,
- isOpenModal: false,
-  }
 
 
- async componentDidUpdate(prevProps,prevState) {
-   const { page, query, perPage } = this.state;
-   
-   if (prevState.query !== query || prevState.page !== page) {
-     this.setState({loading:true})
-     try {
-     const { data } = await getImages({ page, query, perPage })
-     console.log(data.hits);
-     this.setState(prevState => ({
-       images: [...prevState.images, ...data.hits],
-       showButton: page < Math.ceil(data.totalHits / 12),
-           loading: false
-     }))
-     } catch (error) {
-       console.log(error)
-     }finally{
-          this.setState({loading:false})
-    }
-   }
-  }
+export const App = () => {
+  const [page, setPage] = useState(1);
+  const [query, setQuery] = useState('');
+  const [images, setImages] = useState([]);
+  const [perPage, setPerPage] = useState(12);
+  const [loading, setLoading] = useState(false);
+  const [showButton, setShowButton] = useState(false);
+  const [isOpenModal, setIsOpenModal] = useState(false);
   
- handleSubmitForm = query => {
-    this.setState({images:[],page:1,query});
+  useEffect(() => {
+   
+    if (!query) return;
+    setLoading(true)
+    try{
+      getImages({ page, query, perPage }).then(response => {
+        console.log(response);
+        const { hits, totalHits } = response.data;
+        setImages(prevImages => [...prevImages, ...hits]);
+    setShowButton(page < Math.ceil(totalHits / perPage));
+      })
+    } catch (error) {
+      console.log(error);
+      
+    } finally{
+        setLoading(false)
+    }
+    
+},[page, query, perPage])
+  
+  
+  const handleSubmitForm = query => {
+    setImages([]);
+    setPage(1);
+    setQuery(query);
+
   };
 
-  onClickButton = () => {
-    this.setState(prevState =>( {
-  page:prevState.page + 1
-} ))
+ const  onClickButton = () => {
+    setPage(prevState =>( prevState.page + 1))
   }
   
-toggleModal = () => {
-		this.setState(prevState => ({ isOpenModal: !prevState.isOpenModal }))
+   const toggleModal = () => {
+   setIsOpenModal(prevState => ( !prevState ))
 
-	}
+  }
 
-  render() {
-    
-    const { images,showButton,loading } = this.state;
+
     return (
       <>
-        <Searchbar onSubmit={this.handleSubmitForm} />
-        <ImageGallery onClick={this.toggleModal} images={images} />
+        <Searchbar onSubmit={handleSubmitForm} />
+        <ImageGallery onClick={toggleModal} images={images} />
         {loading && (<Loader />)}
-        {showButton && (<Button onClick={this.onClickButton} />)}
+        {showButton && (<Button onClick={onClickButton} />)}
       
        
       </>
     );
   }
-}
-

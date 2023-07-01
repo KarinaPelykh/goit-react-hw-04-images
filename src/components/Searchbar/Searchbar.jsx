@@ -1,51 +1,47 @@
-import { Component } from "react";
+
+import { useState} from "react";
 import s from './Searchbar.module.css'
-export class Searchbar extends Component {
-state = {
-  query: '',
-  images:[]
-  }
+export const Searchbar =(props)=> {
 
+  const [query, setQuery] = useState('');
+    const [images, setImages] = useState([]);
 
-  handelSubmit = (e) => {
+ const handelSubmit = (e) => {
     e.preventDefault()
 
-    this.props.onSubmit(this.state.query);
-     
-    this.setState({query: ''})
+    props.onSubmit(query);
+   setQuery( '')
   }
 
-  handelChangeInput = (e) => {
-    this.setState({query:e.target.value.toLowerCase()})
+ const handelChangeInput = (e) => {
+   setQuery(e.target.value.toLowerCase())
   }
-  handeldizaibel = () => {
-    const {query}= this.state
+   const handeldizaibel = () => {
     if (query === '') {
-      
+      return
     }
 }
 
-  render() {
-    const { query } = this.state;
+
+
      const isQueryEmpty = query.trim() === '';
         return <>
    <header >
-  <form className={s.SearchForm}  onSubmit={this.handelSubmit} >
+  <form className={s.SearchForm}  onSubmit={handelSubmit} >
               <button className={s.SearchFormButton} type="submit" style={{ visibility: isQueryEmpty ? 'hidden' : 'visible' }}>
       <span >Search</span>
     </button>
 
     <input
       className={s.SearchFormInput}
-      type="text"
-      autocomplete="off"
-      autofocus
+      // type="text"
+      // autocomplete="off"
+      // autofocus
       placeholder="Search images and photos"
-      onChange={this.handelChangeInput}
+      onChange={handelChangeInput}
       value={query}
     />
   </form>
 </header>
     </>
    }
-}
