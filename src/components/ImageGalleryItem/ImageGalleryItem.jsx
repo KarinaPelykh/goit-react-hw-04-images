@@ -1,6 +1,5 @@
-
+import PropTypes from "prop-types";
 import React, { useState } from 'react';
-// import s from './ImageGalleryItem.modelu.css';
 import { Modal } from 'components/Modal/Modal';
 export const ImageGalleryItem =(props)=> {
 
@@ -25,7 +24,17 @@ return <>
 }
   
 
+ImageGalleryItem.propTypes = {
+  image:PropTypes.shape({
+   tags:PropTypes.string,
+   id:PropTypes.number,
+   webformatURL:PropTypes.string,
+   largeImageURL:PropTypes.string,
+ 
+  }),
 
+  
+};
 
 
 

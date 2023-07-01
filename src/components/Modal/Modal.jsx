@@ -1,4 +1,4 @@
-
+import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 import styles from './Modal.module.css';
 
@@ -37,3 +37,13 @@ export const Modal=(props)=> {
       </div>
     );
   }
+Modal.propTypes = {
+      image:PropTypes.shape({
+      largeImageURL:PropTypes.string,
+      tags:PropTypes.string,
+    }),
+    onClose:PropTypes.func
+  
+}
+
+  
