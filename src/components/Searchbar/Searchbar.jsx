@@ -4,7 +4,7 @@ import s from './Searchbar.module.css'
 export const Searchbar =(props)=> {
 
   const [query, setQuery] = useState('');
-    const [images, setImages] = useState([]);
+    // const [images, setImages] = useState([]);
 
  const handelSubmit = (e) => {
     e.preventDefault()
@@ -16,11 +16,11 @@ export const Searchbar =(props)=> {
  const handelChangeInput = (e) => {
    setQuery(e.target.value.toLowerCase())
   }
-   const handeldizaibel = () => {
-    if (query === '') {
-      return
-    }
-}
+//    const handeldizaibel = () => {
+//     if (query === '') {
+//       return
+//     }
+// }
 
 
 

@@ -13,7 +13,7 @@ export const Modal=(props)=> {
     return () => {
     document.removeEventListener("keydown", handleKeyDown);
 }
-  },[])
+  })
  
 
 

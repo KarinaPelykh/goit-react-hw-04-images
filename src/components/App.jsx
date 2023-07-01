@@ -49,7 +49,7 @@ export const App = () => {
   }
   
    const toggleModal = () => {
-   setIsOpenModal(prevState => ( !prevState ))
+   setIsOpenModal(previsOpenModal => ( !previsOpenModal ))
 
   }
 
