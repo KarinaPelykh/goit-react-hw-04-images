@@ -7,7 +7,7 @@ const pixabayAPI = axios.create({
   baseURL: 'https://pixabay.com',
 });
 
-export const getImages = async ({ query, page, perPage }) => {
+export const getImages = async ({ query, page, perPage=12 }) => {
   return pixabayAPI.get('/api/', {
     params: {
       key: API_KEY,
